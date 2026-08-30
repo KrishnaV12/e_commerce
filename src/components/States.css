@@ -1,0 +1,56 @@
+.skeleton {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0 0 var(--space-4);
+  overflow: hidden;
+}
+.skeleton__media { width: 100%; aspect-ratio: 4/3; }
+.skeleton__line {
+  height: 12px;
+  margin: var(--space-3) var(--space-4) 0;
+  border-radius: var(--radius-pill);
+}
+.skeleton__line--lg { height: 16px; width: 80%; }
+.skeleton__line--sm { width: 40%; }
+
+.skeleton__media,
+.skeleton__line {
+  background: linear-gradient(
+    100deg,
+    var(--surface-2) 30%,
+    var(--green-100) 50%,
+    var(--surface-2) 70%
+  );
+  background-size: 200% 100%;
+  animation: lazy-shimmer 1.4s ease-in-out infinite;
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-4);
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+}
+.state__icon { font-size: 2.4rem; }
+.state__title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.state__text { color: var(--text-muted); max-width: 34ch; }
+.state__btn {
+  margin-top: var(--space-2);
+  padding: 11px 22px;
+  font-weight: 600;
+  color: var(--on-primary);
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+  transition: background var(--transition);
+}
+.state__btn:hover { background: var(--primary-hover); }

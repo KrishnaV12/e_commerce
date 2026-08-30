@@ -1,0 +1,96 @@
+/* =============================================================================
+   variables.css — DESIGN TOKENS (single source of truth for color)
+   -----------------------------------------------------------------------------
+   Every color in the app is derived from these CSS custom properties. Because
+   each component reads from the SAME variables, the green identity stays
+   perfectly CONSISTENT ("color persistence") across every screen — change a
+   value here and it propagates everywhere at once.
+
+   The palette is a deliberate forest-green scale (900 = darkest, 100 = lightest)
+   rather than a random assortment of greens, so tints/shades relate to each
+   other harmonically.
+
+   A [data-theme="dark"] block re-maps the *semantic* tokens only. The raw scale
+   never changes; we just point "surface", "text", etc. at different rungs. The
+   chosen theme is written to localStorage (see useLocalStorage + App.jsx), so
+   the color choice literally PERSISTS across page reloads too.
+   ========================================================================== */
+
+:root {
+  /* ---- Raw green scale (do not use directly in components) --------------- */
+  --green-900: #081c15;
+  --green-800: #1b4332;
+  --green-700: #2d6a4f;
+  --green-600: #40916c;
+  --green-500: #52b788;
+  --green-400: #74c69d;
+  --green-300: #95d5b2;
+  --green-200: #b7e4c7;
+  --green-100: #d8f3dc;
+  --green-050: #f1f8f4;
+
+  /* ---- Neutrals --------------------------------------------------------- */
+  --white: #ffffff;
+  --ink: #10241c;
+  --muted: #5b7167;
+  --line: #dfe9e3;
+
+  /* ---- Feedback --------------------------------------------------------- */
+  --gold: #e9b949;     /* rating stars */
+  --danger: #c0492f;   /* validation / errors */
+
+  /* ---- SEMANTIC TOKENS (components only ever touch these) ---------------- */
+  --color-bg: var(--green-050);
+  --color-surface: var(--white);
+  --color-surface-alt: var(--green-100);
+  --color-primary: var(--green-700);
+  --color-primary-hover: var(--green-800);
+  --color-accent: var(--green-500);
+  --color-text: var(--ink);
+  --color-text-inv: var(--white);
+  --color-muted: var(--muted);
+  --color-border: var(--line);
+  --color-heart: #e5484d;         /* favorite heart when active */
+
+  /* ---- Typography ------------------------------------------------------- */
+  --font-sans: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.85rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.6rem;
+  --fs-2xl: 2.2rem;
+
+  /* ---- Spacing / shape -------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-sm: 0 1px 2px rgba(8, 28, 21, 0.06);
+  --shadow-md: 0 6px 18px rgba(8, 28, 21, 0.10);
+  --shadow-lg: 0 14px 40px rgba(8, 28, 21, 0.16);
+  --ring: 0 0 0 3px var(--green-200);
+
+  /* Sticky bar height, referenced by scroll-margin so anchors aren't hidden */
+  --header-h: 132px;
+}
+
+/* Dark theme = re-point semantic tokens onto the deep end of the SAME scale.
+   Chosen via the toggle in the header; persisted to localStorage. */
+:root[data-theme='dark'] {
+  --color-bg: var(--green-900);
+  --color-surface: #0f2a20;
+  --color-surface-alt: #123528;
+  --color-primary: var(--green-500);
+  --color-primary-hover: var(--green-400);
+  --color-accent: var(--green-400);
+  --color-text: #eaf5ef;
+  --color-text-inv: var(--green-900);
+  --color-muted: #9db8ad;
+  --color-border: #1f4436;
+}

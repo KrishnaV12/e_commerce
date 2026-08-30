@@ -1,0 +1,131 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+/* FAVORITED products get a visible green ring + tint — the "highlight
+   favorited products visually" requirement, kept strictly in-palette. */
+.card--fav {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-soft), var(--shadow-sm);
+}
+
+.card__media {
+  position: relative;
+}
+
+.card__badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--on-primary);
+  background: color-mix(in srgb, var(--primary) 88%, transparent);
+  backdrop-filter: blur(4px);
+  border-radius: var(--radius-pill);
+}
+
+.card__fav {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  backdrop-filter: blur(6px);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), background var(--transition);
+}
+
+.card__fav:hover { transform: scale(1.08); }
+.card__fav:active { transform: scale(0.92); }
+
+.card__fav svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 2;
+  transition: fill var(--transition), stroke var(--transition), transform var(--transition);
+}
+
+/* filled heart when active */
+.card--fav .card__fav svg {
+  fill: var(--heart);
+  stroke: var(--heart);
+  animation: fav-pop 320ms ease;
+}
+
+@keyframes fav-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+}
+
+.card__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: var(--text);
+  /* clamp to two lines so cards stay the same height */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.6em;
+}
+
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.card__price {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.card__cart {
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--on-primary);
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+  transition: background var(--transition), transform var(--transition);
+}
+
+.card__cart:hover { background: var(--primary-hover); }
+.card__cart:active { transform: scale(0.96); }

@@ -1,0 +1,162 @@
+/* ============================================================================
+   theme.css — SINGLE SOURCE OF TRUTH FOR COLOR
+   ----------------------------------------------------------------------------
+   Every color in the app is a CSS custom property defined here. Components
+   NEVER hardcode a hex value — they reference var(--token). That is what the
+   brief calls "color persistence across all UI": change a token once and the
+   whole product re-themes consistently.
+
+   Two palettes are provided (a light and a dark green scheme). The active one
+   is chosen by the [data-theme] attribute on <html>, which is written by the
+   uiSlice/useTheme hook and PERSISTED to localStorage. So the user's chosen
+   scheme survives reloads — persistence at the color layer too.
+   ========================================================================== */
+
+/* ---- LIGHT (default) : fresh leaf-green on a soft green-white canvas ------ */
+:root,
+:root[data-theme='light'] {
+  /* brand greens (a deliberate scale, not random shades) */
+  --green-50:  #F1F8F3;
+  --green-100: #E4F3E9;
+  --green-200: #C7E6D2;
+  --green-300: #9AD3AE;
+  --green-500: #1B7A43; /* primary action green */
+  --green-600: #14612F;
+  --green-700: #0F4A25;
+  --green-900: #10231A; /* forest near-black (text) */
+
+  /* semantic tokens — components only use THESE */
+  --bg:            var(--green-50);
+  --surface:       #FFFFFF;
+  --surface-2:     #F6FBF7;
+  --border:        #DCEAE0;
+  --border-strong: #C7E6D2;
+
+  --text:        var(--green-900);
+  --text-muted:  #5B6F62;
+  --text-invert: #FFFFFF;
+
+  --primary:        var(--green-500);
+  --primary-hover:  var(--green-600);
+  --primary-soft:   var(--green-100);
+  --on-primary:     #FFFFFF;
+
+  --ring:   rgba(27, 122, 67, 0.35); /* focus outline (accessibility) */
+  --star:   #E8A317;                 /* amber — the one warm accent, for stars */
+  --heart:  var(--green-500);        /* favorites stay in-palette (green) */
+  --danger: #C0392B;
+
+  --shadow-sm: 0 1px 2px rgba(16, 35, 26, 0.06);
+  --shadow-md: 0 6px 20px rgba(16, 35, 26, 0.10);
+  --shadow-lg: 0 18px 48px rgba(16, 35, 26, 0.16);
+}
+
+/* ---- DARK : luminous green on deep forest ------------------------------- */
+:root[data-theme='dark'] {
+  --green-50:  #0C1A12;
+  --green-100: #14311F;
+  --green-200: #1D4029;
+  --green-300: #2E6B44;
+  --green-500: #3FB56A;
+  --green-600: #55C67E;
+  --green-700: #7BD89A;
+  --green-900: #E7F2EA;
+
+  --bg:            #0C1A12;
+  --surface:       #12241A;
+  --surface-2:     #17301F;
+  --border:        #21402C;
+  --border-strong: #2E5A3C;
+
+  --text:        #E7F2EA;
+  --text-muted:  #9DB4A5;
+  --text-invert: #0C1A12;
+
+  --primary:        #3FB56A;
+  --primary-hover:  #55C67E;
+  --primary-soft:   #14311F;
+  --on-primary:     #06120B;
+
+  --ring:   rgba(63, 181, 106, 0.45);
+  --star:   #F0B429;
+  --heart:  #55C67E;
+  --danger: #E06A5C;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- non-color design tokens (shared across themes) --------------------- */
+:root {
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --maxw: 1240px;
+  --transition: 160ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- reset ------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  /* animating background/color makes the theme toggle feel intentional */
+  transition: background var(--transition), color var(--transition);
+}
+
+img,
+picture { display: block; max-width: 100%; }
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+select { font: inherit; }
+
+ul { list-style: none; padding: 0; }
+
+/* one global, visible focus style for keyboard users (accessibility floor) */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

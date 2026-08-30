@@ -1,0 +1,14 @@
+/* auto-fill responsive grid: columns flow from 1 -> 4 with no media queries,
+   using minmax + auto-fill. Cards never get narrower than 220px. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-5);
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-4);
+  }
+}

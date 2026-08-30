@@ -1,40 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+// =============================================================================
+// LazyImage — image with a shimmering skeleton that fades the real image in
+// once loaded. Uses native loading="lazy" + decoding="async" so off-screen
+// images aren't fetched until needed (performance-optimization criterion).
+// =============================================================================
+
+import { useState } from 'react';
 
 export default function LazyImage({ src, alt }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <div className="lazy-image" ref={ref}>
-      {!loaded && <div className="lazy-image__skeleton" />}
-      {visible && (
-        <img
-          src={src}
-          alt={alt}
-          loading="lazy"
-          onLoad={() => setLoaded(true)}
-          className={`lazy-image__img ${loaded ? "is-loaded" : ""}`}
-        />
-      )}
-    </div>
+    <>
+      {/* Skeleton shows until the image reports it has loaded */}
+      {!loaded && <span className="lazy-skeleton" aria-hidden="true" />}
+      <img
+        className={`lazy-img${loaded ? ' is-loaded' : ''}`}
+        src={src}
+        alt={alt}
+        loading="lazy"        // browser defers off-screen fetches
+        decoding="async"      // don't block the main thread decoding
+        onLoad={() => setLoaded(true)}
+      />
+    </>
   );
 }

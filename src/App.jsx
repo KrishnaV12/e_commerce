@@ -1,85 +1,82 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useInfiniteProducts } from "./hooks/useInfiniteProduct";
-import { useInfiniteScroll } from "./hooks/useInfiniteScroll";
-import Header from "./components/Header";
-import ProductGrid from "./components/ProductGrid";
-import FavoritesDrawer from "./components/FavouriteDrawer";
+// =============================================================================
+// App — the shell: header (brand, favorites pill, theme toggle), the sticky
+// Toolbar, and the ProductListing feature.
+//
+// THEME PERSISTENCE: the light/dark green choice is stored via useLocalStorage
+// and applied as a data-theme attribute on <html>. Because every color comes
+// from CSS variables (variables.css), flipping this one attribute recolors the
+// entire UI consistently — and the choice survives reloads.
+// =============================================================================
+
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocalStorage } from './hooks/useLocalStorage.js';
+import { useProducts } from './hooks/useProducts.js';
+import { selectFavoriteCount } from './store/favoritesSlice.js';
+import { selectFilters, toggleFavoritesOnly } from './store/filtersSlice.js';
+import Toolbar from './components/Toolbar.jsx';
+import ProductListing from './features/ProductListing.jsx';
 
 export default function App() {
-  const theme = useSelector((s) => s.ui.theme);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const {showSaleOnly} = useSelector((state)=> state.filters)
+  const dispatch = useDispatch();
+  const favCount = useSelector(selectFavoriteCount);
+  const filters = useSelector(selectFilters);
+
+  // Persisted theme ('light' | 'dark'), applied to <html data-theme>.
+  const [theme, setTheme] = useLocalStorage('greenshop.theme', 'light');
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  const {
-    items,
-    total,
-    status,
-    isError,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useInfiniteProducts();
-
-  useInfiniteScroll({
-    onLoadMore: fetchNextPage,
-    canLoadMore: hasNextPage && !isFetchingNextPage,
-  });
-
-  const saleFilterItems = items?.filter(item => !showSaleOnly || item.sale === true)
+  // Categories come from the cached query so the filter reflects real data.
+  const { data } = useProducts();
+  const categories = data?.categories ?? [];
 
   return (
     <div className="app">
-      <Header onOpenFavorites={() => setDrawerOpen(true)} />
-
-      <main className="content">
-        {status === "pending" && (
-          <div className="state">
-            <div className="spinner" aria-hidden="true" />
-            <p>Loading products…</p>
-          </div>
-        )}
-
-        {isError && (
-          <div className="state">
-            <p>Couldn’t load products.</p>
-          </div>
-        )}
-
-        {status === "success" && (
-          <>
-            <div className="results-bar">
-              {total} product{total === 1 ? "" : "s"}
+      <header className="site-header">
+        <div className="container site-header__row">
+          <div className="brand">
+            <span className="brand__mark">₹</span>
+            <div>
+              <div className="brand__name">E-Commerce Listing</div>
+              <div className="brand__tag">Sustainably sourced goods</div>
             </div>
+          </div>
 
-            {items.length === 0 && !isFetching ? (
-              <div className="state">
-                <p>No products match your filters.</p>
-                <p className="muted">Try a different category or rating.</p>
-              </div>
-            ) : (
-              <ProductGrid items={saleFilterItems} />
-            )}
+          <div className="header-actions">
+            {/* Clicking the pill toggles the "favorites only" filter */}
+            <button
+              type="button"
+              className="fav-pill"
+              aria-pressed={filters.favoritesOnly}
+              onClick={() => dispatch(toggleFavoritesOnly())}
+            >
+              ♥ Favorites
+              <span className="fav-pill__count">{favCount}</span>
+            </button>
 
-            <div className="sentinel">
-              {isFetchingNextPage && (
-                <div className="spinner" aria-hidden="true" />
-              )}
-              {!hasNextPage && items.length > 0 && (
-                <span className="muted">
-                  You’ve reached the end · {total} items
-                </span>
-              )}
-            </div>
-          </>
-        )}
+            <button
+              type="button"
+              className="theme-toggle"
+              aria-label="Toggle color theme"
+              onClick={() => setTheme((t) => (t === 'light' ? 'dark' : 'light'))}
+            >
+              {theme === 'light' ? '☾' : '☀'}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <Toolbar categories={categories} />
+
+      <main className="container" style={{ paddingBottom: 40 }}>
+        <ProductListing />
       </main>
 
-      <FavoritesDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <footer className="site-footer container">
+        E-Commerce Listing · Redux · React Query · TanStack Table · pure CSS
+      </footer>
     </div>
   );
 }

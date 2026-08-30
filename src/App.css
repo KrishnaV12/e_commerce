@@ -1,0 +1,43 @@
+.layout {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: var(--space-5);
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+}
+
+.content {
+  flex: 1;
+  min-width: 0; /* lets the grid shrink instead of overflowing */
+}
+
+/* thin indeterminate bar shown during background refetches */
+.refetch-bar {
+  height: 3px;
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-4);
+  background: linear-gradient(90deg, var(--primary-soft), var(--primary), var(--primary-soft));
+  background-size: 200% 100%;
+  animation: refetch 1s linear infinite;
+}
+@keyframes refetch { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+.sentinel {
+  min-height: 60px;
+  display: grid;
+  place-items: center;
+  padding: var(--space-6) 0 var(--space-4);
+}
+.sentinel__spin {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 3px solid var(--primary-soft);
+  border-top-color: var(--primary);
+  animation: search-spin 0.7s linear infinite;
+}
+.sentinel__end { color: var(--text-muted); font-size: 0.88rem; }
+
+@media (max-width: 860px) {
+  .layout { padding: var(--space-4); gap: 0; }
+}

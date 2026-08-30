@@ -1,0 +1,61 @@
+.ptable__wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.ptable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.ptable th,
+.ptable td {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.ptable thead th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  position: sticky;
+  top: 0;
+}
+
+.ptable th.is-sortable { cursor: pointer; user-select: none; }
+.ptable th.is-sortable:hover { color: var(--primary); }
+.ptable__arrow { margin-left: 6px; font-size: 0.7rem; color: var(--primary); }
+
+.ptable tbody tr { transition: background var(--transition); }
+.ptable tbody tr:hover { background: var(--surface-2); }
+.ptable tbody tr:last-child td { border-bottom: none; }
+
+/* favorited rows carry a green left accent — consistent highlight language */
+.ptable tbody tr.is-fav { background: var(--primary-soft); }
+.ptable tbody tr.is-fav td:first-child { box-shadow: inset 3px 0 0 var(--primary); }
+
+.ptable__thumb { width: 80px; }
+.ptable__thumb .lazy-img { width: 64px; aspect-ratio: 1; border-radius: var(--radius-sm); }
+
+.ptable__name { font-weight: 600; color: var(--text); }
+.ptable__price {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ptable__fav {
+  font-size: 1.15rem;
+  color: var(--border-strong);
+  transition: color var(--transition), transform var(--transition);
+}
+.ptable__fav:hover { transform: scale(1.15); }
+.ptable__fav.is-on { color: var(--heart); }
