@@ -8,7 +8,7 @@ reusable hooks, and a consistent green theme in **pure CSS**.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm start dev      # http://localhost:3000
 npm run build    # production build
 npm run preview  # preview the build
 ```

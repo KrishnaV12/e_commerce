@@ -21,7 +21,7 @@ function seeded(n) {
   return x - Math.floor(x);
 }
 
-function buildProducts(count = 66) {
+function buildProducts(count = 100) {
   const products = [];
   for (let i = 1; i <= count; i++) {
     const category = CATEGORIES[i % CATEGORIES.length];
